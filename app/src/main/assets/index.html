@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#211d1a">
+<meta name="description" content="Dessert Lab — рецепты и технологические карты кондитера">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Dessert Lab — технологические карты</title>
+<style>
+:root{--bg:#f5f2ed;--card:#fff;--ink:#26221f;--muted:#827a72;--line:#e8e1d9;--accent:#8b5e3c;--accent2:#ead9c8;--green:#35745b;--danger:#a34236}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:#211d1a;color:#fff;padding:20px max(18px,calc((100% - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:800;font-size:20px;letter-spacing:.2px}.brand span{color:#d9b99e}header small{color:#c7bdb4}
+main{max-width:1100px;margin:24px auto;padding:0 16px 60px}.layout{display:grid;grid-template-columns:290px 1fr;gap:18px;align-items:start}
+.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 18px #33221108}
+.panel{padding:14px;position:sticky;top:14px}.card{padding:20px}
+h1{font-size:26px;margin:0 0 5px}h2{font-size:17px;margin:0 0 14px}.muted{color:var(--muted)}.tiny{font-size:12px;color:var(--muted)}
+button,.btn{border:0;border-radius:10px;padding:10px 13px;background:var(--accent);color:#fff;font-weight:650;cursor:pointer;font-size:14px}
+button.secondary{background:#f0e9e2;color:#4a3a2e}button.ghost{background:transparent;color:var(--accent);padding:8px}button.danger{background:#f8e9e6;color:var(--danger)}
+button:disabled{opacity:.45;cursor:not-allowed}.full{width:100%}
+.search{width:100%;margin:12px 0}.field{display:flex;flex-direction:column;gap:5px;margin:10px 0}.field label{font-size:12px;font-weight:700;color:#70665d}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:inherit;min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid #c9a98e;border-color:transparent}
+.recipe-list{display:flex;flex-direction:column;gap:6px;max-height:55vh;overflow:auto}.recipe-item{padding:11px;border-radius:10px;cursor:pointer;border:1px solid transparent;display:flex;justify-content:space-between;gap:8px}.recipe-item.active{background:#f4ece4;border-color:#e5d3c1}.recipe-item strong{display:block}.recipe-item small{color:var(--muted)}
+.topline{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.actions{display:flex;gap:7px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:18px 0}.stat{background:#f8f5f1;border-radius:12px;padding:12px}.stat small{display:block;color:var(--muted);font-size:11px}.stat strong{font-size:18px}
+.scale{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#f8f5f1;padding:14px;border-radius:12px;margin:16px 0}
+.ring-box{background:#fbf8f4;border:1px solid var(--line);border-radius:13px;padding:14px;margin:18px 0}.ring-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.ring-result{font-size:14px;margin-top:10px;padding:10px;background:#f0e9e2;border-radius:9px}.ring-editor{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+table{width:100%;border-collapse:collapse}th{text-align:left;color:var(--muted);font-size:12px;font-weight:700;padding:10px 8px;border-bottom:1px solid var(--line)}td{padding:11px 8px;border-bottom:1px solid var(--line)}td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}tr:last-child td{border-bottom:0}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:20px 0 8px}.note{white-space:pre-wrap;background:#faf8f5;padding:13px;border-radius:10px;color:#514940}
+.empty{text-align:center;padding:60px 18px}.empty .emoji{font-size:42px;margin-bottom:10px}
+.modal-back{position:fixed;inset:0;background:#17120f88;display:none;align-items:center;justify-content:center;padding:16px;z-index:5}.modal{background:white;border-radius:16px;padding:20px;width:min(680px,100%);max-height:90vh;overflow:auto}.modal h2{margin-bottom:4px}.ingredient-row{display:grid;grid-template-columns:1.7fr .8fr .8fr 86px 32px;gap:7px;margin:7px 0}.ingredient-row button{padding:5px}
+.mobile-only{display:none}.hidden{display:none!important}.footer{margin-top:14px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:760px){.mobile-only{display:block}.panel.library-collapsed .search,.panel.library-collapsed .recipe-list,.panel.library-collapsed .library-actions,.panel.library-collapsed .library-hint{display:none!important}.ingredient-row{grid-template-columns:1.3fr .7fr .7fr 60px 30px}.layout{grid-template-columns:1fr}.panel{position:static}.recipe-list{max-height:220px}.card{padding:15px}.stats{grid-template-columns:repeat(3,1fr)}.scale{grid-template-columns:1fr 1fr}header{padding:15px 18px}}
+@media print{body{background:#fff}.panel,header,.actions,.scale button,.no-print,.footer{display:none!important}main{margin:0;padding:0}.layout{display:block}.card{border:0;box-shadow:none;padding:0}.note{background:#fff;padding:0}}
+</style>
+</head>
+<body>
+<header><div class="brand">DESSERT <span>LAB</span></div><small>Технологические карты · перерасчёт</small></header>
+<main>
+<div class="layout">
+<aside class="panel" id="libraryPanel">
+  <button class="full" id="newRecipe">＋ Новый рецепт</button>
+  <button class="secondary full mobile-only" id="toggleLibrary" style="margin-top:8px">☰ Моя библиотека рецептов</button>
+  <input class="search" id="search" placeholder="Поиск десерта…">
+  <div class="recipe-list" id="recipeList"></div>
+  <div class="library-actions" style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px">
+    <button class="secondary" id="exportBtn">Экспорт</button>
+    <button class="secondary" id="importBtn">Импорт</button>
+  </div>
+  <input id="importFile" type="file" accept="application/json" class="hidden">
+  <p class="tiny library-hint">Рецепты сохраняются на устройстве. Регулярно создавай резервную копию.</p>
+</aside>
+<section id="workspace">
+  <div class="card empty"><div class="emoji">🍰</div><h1>Твоя база десертов</h1><p class="muted">Создай первый рецепт или выбери его из списка. Программа пересчитает ингредиенты под нужное количество порций.</p><button id="emptyNew">Создать рецепт</button></div>
+</section>
+</div>
+<div class="footer">Dessert Lab · версия 1.2.1 · Android · локальное хранение рецептов</div>
+</main>
+<div class="modal-back" id="modal">
+ <div class="modal">
+  <div class="topline"><div><h2 id="modalTitle">Новый рецепт</h2><div class="tiny">Заполни исходную технологическую карту</div></div><button class="ghost" id="closeModal">✕</button></div>
+  <div class="field"><label>Название десерта</label><input id="rName" placeholder="Например, чизкейк классический"></div>
+  <div class="field"><label>Исходный выход, порций</label><input id="rYield" type="number" min="0.01" step="any" value="10"></div>
+  <div class="section-head"><h2>Исходное кондитерское кольцо</h2></div>
+  <div class="ring-editor"><div class="field"><label>Диаметр, см</label><input id="rDiameter" type="number" min="1" step="0.1" value="18"></div><div class="field"><label>Высота, см</label><input id="rHeight" type="number" min="1" step="0.1" value="5"></div></div>
+  <p class="tiny">Размер формы, под который рассчитана исходная рецептура. Можно оставить 18 × 5 см, если рецепт ещё не привязан к кольцу.</p>
+  <div class="field"><label>Описание / технология приготовления</label><textarea id="rNotes" rows="3" placeholder="Температура, время, последовательность…"></textarea></div>
+  <div class="section-head"><h2>Ингредиенты</h2><button class="secondary" id="addIngredient">＋ Добавить</button></div>
+  <p class="tiny">Цена закупки указывается за 1 кг, 1 л или 1 штуку — в зависимости от единицы ингредиента. Для прочих единиц цена указывается за одну такую единицу.</p>
+  <div id="ingredientEditor"></div>
+  <div class="actions" style="justify-content:flex-end;margin-top:18px"><button class="secondary" id="cancelEdit">Отмена</button><button id="saveRecipe">Сохранить рецепт</button></div>
+ </div>
+</div>
+<script>
+const KEY='dessert_lab_recipes_v1';
+let recipes=load(), selected=null, editingId=null;
+let currency=localStorage.getItem('dessert_lab_currency')||'RUB';
+const $=id=>document.getElementById(id);
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(recipes))}
+function uid(){return 'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fmt(n){if(!Number.isFinite(n))return '—';return Number(n.toFixed(3)).toLocaleString('ru-RU',{maximumFractionDigits:3})}
+function money(n){if(!Number.isFinite(n))return '—';return new Intl.NumberFormat('ru-RU',{style:'currency',currency,maximumFractionDigits:2}).format(n)}
+function ingredientCost(i,qty){const price=Number(i.price)||0;if(!price)return 0;const u=i.unit||'г';let multiplier=1;if(u==='г'||u==='мл')multiplier=qty/1000;else multiplier=qty;return multiplier*price}
+function totalCost(r,factor=1){return r.ingredients.reduce((sum,i)=>sum+ingredientCost(i,Number(i.qty)*factor),0)}
+function updateCosts(){const r=recipes.find(x=>x.id===selected);if(!r)return;const target=Number($('targetYield')?.value),f=target>0?target/r.yield:NaN;const base=totalCost(r),scaled=Number.isFinite(f)?totalCost(r,f):NaN;const filled=r.ingredients.filter(i=>Number(i.price)>0).length; if($('baseCost'))$('baseCost').textContent=money(base);if($('scaledCost'))$('scaledCost').textContent=money(scaled);if($('portionCost'))$('portionCost').textContent=Number.isFinite(scaled)&&target>0?money(scaled/target):'—';if($('costHint'))$('costHint').textContent=filled?`Заполнены цены для ${filled} из ${r.ingredients.length} ингредиентов. Валюта расчёта: ${currency}.`:'Заполни закупочные цены ингредиентов при редактировании рецепта. Пока неуказанные цены считаются равными нулю.'}
+
+function renderList(){
+ const q=$('search').value.toLowerCase();
+ $('recipeList').innerHTML=recipes.filter(r=>r.name.toLowerCase().includes(q)).map(r=>`<div class="recipe-item ${r.id===selected?'active':''}" data-id="${r.id}"><div><strong>${esc(r.name)}</strong><small>${r.ingredients.length} ингредиентов · ${fmt(r.yield)} порций</small></div><span>›</span></div>`).join('')||'<div class="tiny" style="padding:12px">Рецептов пока нет</div>';
+ document.querySelectorAll('.recipe-item').forEach(el=>el.onclick=()=>{selected=el.dataset.id;render()});
+}
+function render(){
+ renderList();const r=recipes.find(x=>x.id===selected);
+ if(!r){$('workspace').innerHTML='<div class="card empty"><div class="emoji">🍰</div><h1>Твоя база десертов</h1><p class="muted">Создай первый рецепт или выбери его из списка.</p><button id="emptyNew2">Создать рецепт</button></div>';$('emptyNew2').onclick=openNew;return}
+ $('workspace').innerHTML=`<div class="card">
+ <div class="topline"><div><div class="tiny">ТЕХНОЛОГИЧЕСКАЯ КАРТА</div><h1>${esc(r.name)}</h1><div class="muted">Исходный выход: ${fmt(r.yield)} порций</div></div>
+ <div class="actions"><button class="secondary" id="editBtn">Изменить</button><button class="secondary" id="printBtn">Печать</button><button class="danger" id="deleteBtn">Удалить</button></div></div>
+ <div class="scale"><div class="field" style="margin:0"><label>Нужно порций</label><input id="targetYield" type="number" min="0.001" step="any" value="${fmt(r.yield).replace(',','.')}"></div><div class="field" style="margin:0"><label>Коэффициент</label><input id="factor" readonly value="1,000"></div></div>
+ <div class="stats"><div class="stat"><small>Исходный выход</small><strong>${fmt(r.yield)}</strong></div><div class="stat"><small>Новый выход</small><strong id="newYield">${fmt(r.yield)}</strong></div><div class="stat"><small>Коэффициент</small><strong id="factorStat">×1</strong></div></div>
+ <div class="ring-box no-print"><div class="section-head" style="margin-top:0"><h2>Перерасчёт под кольца</h2></div>
+ <p class="tiny">Укажи размер нового кольца и количество форм. Расчёт учитывает площадь дна, высоту и число колец.</p>
+ <div class="ring-grid"><div class="field"><label>Диаметр, см</label><input id="targetDiameter" type="number" min="1" step="0.1" value="${Number(r.diameter)||18}"></div><div class="field"><label>Высота, см</label><input id="targetHeight" type="number" min="1" step="0.1" value="${Number(r.ringHeight)||5}"></div><div class="field"><label>Количество колец</label><input id="ringCount" type="number" min="1" step="1" value="1"></div></div>
+ <div class="ring-result" id="ringResult">Введите размеры колец для расчёта</div><div style="overflow-x:auto;margin-top:10px"><table><thead><tr><th>Ингредиент</th><th style="text-align:right">Исходное</th><th style="text-align:right">Для колец</th></tr></thead><tbody id="ringIngredientTable"></tbody></table></div></div>
+ <div class="section-head"><h2>Ингредиенты после пересчёта по порциям</h2><button class="secondary no-print" id="copyBtn">Копировать список</button></div>
+ <div style="overflow-x:auto"><table><thead><tr><th>Ингредиент</th><th style="text-align:right">Исходное количество</th><th style="text-align:right">Новое количество</th></tr></thead><tbody id="ingredientTable"></tbody></table></div>
+ <div class="section-head"><h2>Себестоимость</h2><select id="currencySelect" aria-label="Валюта расчёта" style="width:auto;min-width:105px"><option value="RUB" ${currency==='RUB'?'selected':''}>₽ RUB</option><option value="EUR" ${currency==='EUR'?'selected':''}>€ EUR</option><option value="USD" ${currency==='USD'?'selected':''}>$ USD</option></select></div>
+ <div class="stats cost-stats"><div class="stat"><small>Стоимость исходной закладки</small><strong id="baseCost">—</strong></div><div class="stat"><small>Стоимость пересчитанной закладки</small><strong id="scaledCost">—</strong></div><div class="stat"><small>Себестоимость порции</small><strong id="portionCost">—</strong></div></div>
+ <div class="tiny" id="costHint">Заполни закупочные цены ингредиентов при редактировании рецепта.</div>
+ <div class="section-head"><h2>Технология / примечания</h2></div><div class="note">${esc(r.notes||'Не заполнено')}</div>
+ <p class="tiny">Перерасчёт линейный. Для ингредиентов в штуках, желатина, соли и разрыхлителя проверь технологию и при необходимости округли вручную.</p>
+ </div>`;
+ $('targetYield').oninput=updateScale;['targetDiameter','targetHeight','ringCount'].forEach(id=>$(id).oninput=updateRingScale);$('currencySelect').onchange=e=>{currency=e.target.value;localStorage.setItem('dessert_lab_currency',currency);updateCosts();updateRingScale()};
+ $('editBtn').onclick=()=>openEdit(r.id);$('printBtn').onclick=()=>window.print();$('deleteBtn').onclick=()=>{if(confirm('Удалить рецепт «'+r.name+'»?')){recipes=recipes.filter(x=>x.id!==r.id);selected=recipes[0]?.id||null;persist();render()}};
+ $('copyBtn').onclick=()=>{const t=makeCopy(r,Number($('targetYield').value));if(window.AndroidBridge?.copyText){window.AndroidBridge.copyText(t);return}navigator.clipboard?.writeText(t).then(()=>alert('Рецептура скопирована')).catch(()=>prompt('Скопируй рецептуру:',t))};
+ updateScale();updateRingScale();
+}
+function updateRingScale(){
+ const r=recipes.find(x=>x.id===selected);if(!r||!$('ringResult'))return;
+ const baseD=Number(r.diameter)||18,baseH=Number(r.ringHeight)||5,d=Number($('targetDiameter').value),h=Number($('targetHeight').value),count=Number($('ringCount').value);
+ const valid=d>0&&h>0&&count>0, factor=valid?(d*d*h*count)/(baseD*baseD*baseH):NaN;
+ $('ringResult').textContent=valid?`Исходное кольцо: ${fmt(baseD)} × ${fmt(baseH)} см · Новая закладка: ×${fmt(factor)} · всего ${count} ${count===1?'кольцо':'колец'}. Количества ингредиентов ниже умножаются на этот коэффициент.`:'Проверь диаметр, высоту и количество колец.';
+ const target=Number($('targetYield').value),yieldFactor=target>0?target/r.yield:1;
+ $('ringIngredientTable').innerHTML=r.ingredients.map(i=>`<tr><td>${esc(i.name)}</td><td class="num">${fmt(i.qty)} ${esc(i.unit)}</td><td class="num">${valid?fmt(i.qty*factor):'—'} ${esc(i.unit)}</td></tr>`).join('');
+ if($('ringResult')&&valid){const c=totalCost(r,factor);$('ringResult').textContent+=` Расчётная стоимость закладки: ${money(c)}.`}
+}
+function updateScale(){
+ const r=recipes.find(x=>x.id===selected);if(!r)return;
+ const target=Number($('targetYield').value),valid=target>0, factor=valid?target/r.yield:NaN;
+ $('factor').value=valid?fmt(factor):'—';$('factorStat').textContent=valid?'×'+fmt(factor):'—';$('newYield').textContent=valid?fmt(target):'—';
+ $('ingredientTable').innerHTML=r.ingredients.map(i=>`<tr><td>${esc(i.name)}</td><td class="num">${fmt(i.qty)} ${esc(i.unit)}</td><td class="num">${valid?fmt(i.qty*factor):'—'} ${esc(i.unit)}</td></tr>`).join('');
+ if($('targetDiameter'))updateRingScale();updateCosts();
+}
+function makeCopy(r,target){let f=target/r.yield;return `${r.name}\nВыход: ${fmt(target)} порций (коэффициент ×${fmt(f)})\n\n`+r.ingredients.map(i=>`${i.name}: ${fmt(i.qty*f)} ${i.unit}`).join('\n')+(r.notes?'\n\nТехнология:\n'+r.notes:'')}
+function openNew(){editingId=null;$('modalTitle').textContent='Новый рецепт';$('rName').value='';$('rYield').value=10;$('rDiameter').value=18;$('rHeight').value=5;$('rNotes').value='';$('ingredientEditor').innerHTML='';addIngredientRow();addIngredientRow();$('modal').style.display='flex'}
+function openEdit(id){const r=recipes.find(x=>x.id===id);editingId=id;$('modalTitle').textContent='Редактировать рецепт';$('rName').value=r.name;$('rYield').value=r.yield;$('rDiameter').value=r.diameter||18;$('rHeight').value=r.ringHeight||5;$('rNotes').value=r.notes||'';$('ingredientEditor').innerHTML='';r.ingredients.forEach(addIngredientRow);$('modal').style.display='flex'}
+function addIngredientRow(i={name:'',qty:'',unit:'г'}){const d=document.createElement('div');d.className='ingredient-row';d.innerHTML=`<input placeholder="Ингредиент" value="${esc(i.name)}" class="iname"><input type="number" min="0" step="any" placeholder="Кол-во" value="${i.qty??''}" class="iqty"><input type="number" min="0" step="any" placeholder="Цена" value="${i.price??''}" class="iprice" title="Цена за 1 кг, 1 л или 1 шт. (для г/мл цена автоматически пересчитывается)"><select class="iunit">${['г','кг','мл','л','шт.','ч. л.','ст. л.','уп.'].map(u=>`<option ${u===(i.unit||'г')?'selected':''}>${u}</option>`).join('')}</select><button class="danger" title="Удалить строку">×</button>`;d.querySelector('button').onclick=()=>d.remove();$('ingredientEditor').appendChild(d)}
+function save(){
+ const name=$('rName').value.trim(),y=Number($('rYield').value),notes=$('rNotes').value.trim(),diameter=Number($('rDiameter').value),ringHeight=Number($('rHeight').value);
+ const ingredients=[...$('ingredientEditor').children].map(d=>({name:d.querySelector('.iname').value.trim(),qty:Number(d.querySelector('.iqty').value),unit:d.querySelector('.iunit').value,price:Number(d.querySelector('.iprice').value)||0})).filter(i=>i.name);
+ if(!name){alert('Укажи название десерта');return}if(!(y>0)){alert('Исходный выход должен быть больше нуля');return}if(!(diameter>0&&ringHeight>0)){alert('Проверь размеры исходного кольца');return}if(!ingredients.length||ingredients.some(i=>!(i.qty>=0))){alert('Добавь ингредиенты и укажи их количество');return}
+ if(editingId){const idx=recipes.findIndex(x=>x.id===editingId);recipes[idx]={...recipes[idx],name,yield:y,notes,ingredients,diameter,ringHeight}}
+ else{const r={id:uid(),name,yield:y,notes,ingredients,diameter,ringHeight};recipes.unshift(r);selected=r.id}
+ persist();$('modal').style.display='none';render();
+}
+$('newRecipe').onclick=openNew;$('emptyNew').onclick=openNew;
+if($('toggleLibrary'))$('toggleLibrary').onclick=()=>{$('libraryPanel').classList.toggle('library-collapsed')};
+if(window.matchMedia('(max-width:760px)').matches)$('libraryPanel').classList.add('library-collapsed');$('addIngredient').onclick=()=>addIngredientRow();$('saveRecipe').onclick=save;$('closeModal').onclick=$('cancelEdit').onclick=()=>$('modal').style.display='none';$('search').oninput=renderList;
+$('exportBtn').onclick=()=>{const backup=JSON.stringify(recipes,null,2);if(window.AndroidBridge?.saveBackup){window.AndroidBridge.saveBackup(backup);return}const blob=new Blob([backup],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dessert-lab-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data)||!data.every(r=>r.name&&r.yield>0&&Array.isArray(r.ingredients)))throw Error();if(confirm('Импорт заменит текущую базу рецептов. Продолжить?')){recipes=data;selected=recipes[0]?.id||null;persist();render()}}catch(err){alert('Не удалось прочитать файл. Проверь, что это резервная копия Dessert Lab.')}e.target.value=''};
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>
